@@ -34,11 +34,13 @@ public class Player extends Actor {
 	}
 
 	/**
-	 * Does the generic action(s) (eg: play sound) for the shooting and then
-	 * some specific things to the player
+	 *@return
+	 * Plays the shooting sound and returns a bullet at the position of the actor.
 	 */
-	public void shoot() {
-		super.shoot();
+	public Bullet shoot() {
+		playShoothingSound();
+		Bullet bullet = new Bullet(0, 0, false);
+		return bullet;
 	}
 
 	public String getName() {

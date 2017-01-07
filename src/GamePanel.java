@@ -28,8 +28,9 @@ import sun.audio.AudioStream;
 
 /**
  * 
- * @author Lucia
- *
+ * Main panel of the game. Contains all elements of the game including
+ * background, players, enemies and bullets. Controls the painting and
+ * repainting.
  */
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -37,13 +38,14 @@ public class GamePanel extends JPanel implements KeyListener {
 	 * Background settings
 	 */
 	private static final String backgroundImage = "src/magellanic-clouds.png";
-	private static final Color backgroundColor = Color.black;
+	private static final Color backgroundColor = Color.white;
 	// When set on true, the background is a solid color, not an image
-	private static final boolean solidColorBackground = false;
+	private static final boolean solidColorBackground = true;
 
 	private Player localPlayer;
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private ArrayList<Player> players = new ArrayList<Player>();
+	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
 	/**
 	 * 
@@ -141,6 +143,12 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 	}
 
+	public void paintBullets(Graphics g) {
+		for (Bullet bullet : bullets) {
+			g.drawImage(bullet.getImage(), bullet.getX(), bullet.getY(), this);
+		}
+	}
+
 	public Player getLocalPlayer() {
 		return localPlayer;
 	}
@@ -154,11 +162,11 @@ public class GamePanel extends JPanel implements KeyListener {
 	 * Overwrites the paint function. It is called for the first render of the
 	 * images and each time <b>repaint()</b> is used.<br>
 	 * The background is set (either solid color or image according to the
-	 * boolean solidColorBackground). Then the players, enemies are drawn and
-	 * the local player's name is painted underneath its avatar.
+	 * boolean solidColorBackground). Then the players, enemies and bullets are
+	 * drawn and the local player's name is painted underneath its avatar.
 	 */
 	protected void paintComponent(Graphics g) {
-		// super.paintComponent(g);
+		super.paintComponent(g);
 
 		if (solidColorBackground) {
 			setBackground(backgroundColor);
@@ -173,6 +181,7 @@ public class GamePanel extends JPanel implements KeyListener {
 		//
 		paintPlayers(g);
 		paintEnemies(g);
+		paintBullets(g);
 		// g.drawImage(player.getImage(), playerPos, getHeight() -
 		// player.getImage().getHeight() - 50, this);
 
@@ -201,7 +210,10 @@ public class GamePanel extends JPanel implements KeyListener {
 			localPlayer.setX(localPlayer.getX() + localPlayer.getStep());
 			break;
 		case 32:
-			localPlayer.shoot();
+			Bullet bullet = localPlayer.shoot();
+			System.out.println(bullet.getX() + " " + bullet.getY());
+			bullets.add(bullet);
+			System.out.println(bullets.size());
 			break;
 		}
 		repaint();

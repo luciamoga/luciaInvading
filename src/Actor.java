@@ -22,9 +22,9 @@ public abstract class Actor {
 	public Actor() {
 	}
 	/**
-	 * The shooting action is
+	 * Plays the actor's shooting sound
 	 */
-	public void shoot() {
+	public void playShoothingSound() {
 		try {
 			AudioPlayer.player.start(new AudioStream(new FileInputStream(shootingSoundFile)));
 
@@ -83,6 +83,7 @@ public abstract class Actor {
 	public void setAvatar(BufferedImage avatar) {
 		this.avatar = avatar;
 	}
+	
 	
 
 }

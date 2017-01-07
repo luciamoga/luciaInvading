@@ -16,7 +16,9 @@ public class Enemy extends Actor {
 	/**
 	 * Does the generic action(s) (eg: play sound) for the shooting and then some specific things to the player
 	 */
-	public void shoot() {
-		super.shoot();
+	public Bullet shoot() {
+		playShoothingSound();
+		Bullet bullet = new Bullet(getX(), getY(), true);
+		return bullet;
 	}
 }
