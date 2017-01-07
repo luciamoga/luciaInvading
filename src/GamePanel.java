@@ -58,21 +58,33 @@ public class GamePanel extends JPanel implements KeyListener {
 		this.enemies = enemies;
 	}
 
+	/**
+	 * Sets up the panel, adds a dummy player, generates a number of enemies and
+	 * sets up the timed events
+	 */
 	public GamePanel() {
 		addKeyListener(this);
 		setVisible(true);
 		setFocusable(true);
 		requestFocus(true);
 		requestFocusInWindow();
-		
-		//Create a player 
-		this.setLocalPlayer( new Player("Alex", 150, 380));
-		
-		//Generate 15 enemies
+
+		// Create a player
+		this.setLocalPlayer(new Player("Alex", 150, 380));
+
+		// Generate 15 enemies
 		generateEnemies(15);
-		
-		
-		
+
+		setTimerEvents();
+	}
+
+	/**
+	 * Sets up actions that happen repeatedly during the game. This controls the
+	 * enemy's respawning after becoming invisible due to going outside the
+	 * view: it reappears at the same x position, but at the top of the screen.
+	 * Each time an enemy is moved, the <b>repaint</b> function is called.
+	 */
+	private void setTimerEvents() {
 		Timer timer = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -91,16 +103,14 @@ public class GamePanel extends JPanel implements KeyListener {
 		timer.setRepeats(true);
 		timer.setCoalesce(true);
 		timer.start();
-
-
 	}
 
-	// //@Override
-	// public Dimension getPreferredSize() {
-	//// return player == null ? super.getPreferredSize()
-	//// : new Dimension(WIDTH, HEIGHT);
-	// return super.getPreferredSize();
-	// }
+	/**
+	 * 
+	 * @param n
+	 *            number of enemies to generate<br>
+	 *            Generates n enemies at random positions
+	 */
 	public void generateEnemies(int n) {
 		Random rand = new Random();
 		for (int i = 0; i <= n; i++) {
@@ -131,12 +141,24 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 	}
 
-	@Override
+	public Player getLocalPlayer() {
+		return localPlayer;
+	}
+
+	public void setLocalPlayer(Player localPlayer) {
+		this.localPlayer = localPlayer;
+		players.add(localPlayer);
+	}
+
+	/**
+	 * Overwrites the paint function. It is called for the first render of the
+	 * images and each time <b>repaint()</b> is used.<br>
+	 * The background is set (either solid color or image according to the
+	 * boolean solidColorBackground). Then the players, enemies are drawn and
+	 * the local player's name is painted underneath its avatar.
+	 */
 	protected void paintComponent(Graphics g) {
 		// super.paintComponent(g);
-
-		// setOpaque(false);
-		// setBackground(Color.black);
 
 		if (solidColorBackground) {
 			setBackground(backgroundColor);
@@ -158,10 +180,6 @@ public class GamePanel extends JPanel implements KeyListener {
 		Font font = new Font("Courier", Font.BOLD, 15);
 		g.setFont(font);
 		g.drawString(localPlayer.getName(), localPlayer.getX(), localPlayer.getY() + 45);
-	}
-
-	public void playSound(AudioStream audioStream) {
-		AudioPlayer.player.start(audioStream);
 	}
 
 	@Override
@@ -200,13 +218,4 @@ public class GamePanel extends JPanel implements KeyListener {
 
 	}
 
-	public Player getLocalPlayer() {
-		return localPlayer;
-	}
-
-	public void setLocalPlayer(Player localPlayer) {
-		this.localPlayer = localPlayer;
-		players.add(localPlayer);
-	}
-	
 }
