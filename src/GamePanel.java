@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private static final String backgroundImage = "src/magellanic-clouds.png";
 	private static final Color backgroundColor = Color.white;
 	// When set on true, the background is a solid color, not an image
-	private static final boolean solidColorBackground = true;
+	private static final boolean solidColorBackground = false;
 
 	private Player localPlayer;
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
